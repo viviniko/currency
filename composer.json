@@ -1,0 +1,34 @@
+{
+    "name": "viviniko/currency",
+    "description": "VIVINIKO Currency Service Provider",
+	"keywords": ["viviniko", "currency", "laravel"],
+	"homepage": "http://viviniko.com",
+	"license": "MIT",
+	"authors": [
+        {
+            "name": "viviniko",
+            "email": "viviniko.shop@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "viviniko/support": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Viviniko\\Currency": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Viviniko\\Currency\\CurrencyServiceProvider"
+            ],
+            "aliases": {
+                "Currency": "Viviniko\\Currency\\Facades\\Currency"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
