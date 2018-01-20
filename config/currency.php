@@ -9,7 +9,7 @@ return [
     | This is the Currency model.
     |
     */
-    'currency' => 'Common\Currency\Models\Currency',
+    'currency' => 'Viviniko\Currency\Models\Currency',
 
     /*
     |--------------------------------------------------------------------------
