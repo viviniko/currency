@@ -2,8 +2,8 @@
 
 namespace Viviniko\Currency\Services\Currency;
 
-use Viviniko\Currency\Contracts\CurrencyService;
 use Viviniko\Currency\Repositories\Currency\CurrencyRepository;
+use Viviniko\Currency\Services\CurrencyService;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -192,5 +192,10 @@ class CurrencyServiceImpl implements CurrencyService
     public function deleteCurrency($id)
     {
         return $this->currencyRepository->delete($id);
+    }
+
+    public function listCurrencies($name = 'name', $key = 'code')
+    {
+        return $this->getCurrencies()->pluck($name, $key);
     }
 }
