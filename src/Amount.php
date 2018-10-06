@@ -11,14 +11,17 @@ class Amount
 
     private $amount;
 
-    public function __construct($currency, $amount)
+    private $discount;
+
+    public function __construct($currency, $amount, $discount = 0)
     {
         if (is_string($currency)) {
             $currency = CurrencyFacade::getCurrencyByCode($currency);
         }
         throw_if(!$currency instanceof Currency, new \InvalidArgumentException());
         $this->currency = $currency;
-        $this->amount = $amount;
+        $this->discount = $discount;
+        $this->amount = $amount * ((100 - $discount) / 100);
     }
 
     public function __toString()
