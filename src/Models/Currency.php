@@ -11,6 +11,6 @@ class Currency extends Model
 {
     protected $tableConfigKey = 'currency.currencies_table';
 
-    protected $fillable = ['name', 'code', 'symbol', 'rate'];
+    protected $fillable = ['name', 'code', 'symbol', 'rate', 'is_active'];
 
 }

@@ -4,7 +4,7 @@ namespace Viviniko\Currency\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Currency extends Facade
+class CurrencyFacade extends Facade
 {
     /**
      * Get the registered name of the component.
