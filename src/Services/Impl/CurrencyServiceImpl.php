@@ -181,17 +181,26 @@ class CurrencyServiceImpl implements CurrencyService
 
     public function createCurrency(array $data)
     {
-        return $this->currencyRepository->create($data);
+        $result = $this->currencyRepository->create($data);
+        Cache::forget('currency.currencies');
+
+        return $result;
     }
 
     public function updateCurrency($id, array $data)
     {
-        return $this->currencyRepository->update($id, $data);
+        $result = $this->currencyRepository->update($id, $data);
+        Cache::forget('currency.currencies');
+
+        return $result;
     }
 
     public function deleteCurrency($id)
     {
-        return $this->currencyRepository->delete($id);
+        $result = $this->currencyRepository->delete($id);
+        Cache::forget('currency.currencies');
+
+        return $result;
     }
 
     public function listCurrencies($name = 'name', $key = 'code')
