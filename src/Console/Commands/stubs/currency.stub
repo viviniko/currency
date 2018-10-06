@@ -34,7 +34,7 @@ class CreateCurrencyTable extends Migration
             $table->string('name', 50);
             $table->string('code', 20)->unique();
             $table->string('symbol', 10);
-            $table->decimal('rate', 8, 4);
+            $table->decimal('rate', 16, 4);
             $table->timestamps();
         });
     }

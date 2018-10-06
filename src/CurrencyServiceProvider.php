@@ -47,7 +47,7 @@ class CurrencyServiceProvider extends ServiceProvider
             return $currencyService;
         });
 
-        $this->app->alias('currency', \Viviniko\Currency\Contracts\CurrencyService::class);
+        $this->app->alias('currency', \Viviniko\Currency\Services\CurrencyService::class);
     }
 
     protected function registerCommands()
@@ -61,7 +61,7 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         return [
             'currency',
-            \Viviniko\Currency\Contracts\CurrencyService::class,
+            \Viviniko\Currency\Services\CurrencyService::class,
         ];
     }
 }
