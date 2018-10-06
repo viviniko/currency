@@ -17,4 +17,6 @@ interface CurrencyService
     public function updateCurrency($id, array $data);
 
     public function deleteCurrency($id);
+
+    public function getCurrencyByCode($code);
 }

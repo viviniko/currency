@@ -140,7 +140,7 @@ class CurrencyServiceImpl implements CurrencyService
         return number_format($price, 2, '.', $thousandsSep);
     }
 
-    public function findByCode($code)
+    public function getCurrencyByCode($code)
     {
         return $this->getCurrencies()->where('code', $code)->first();
     }
