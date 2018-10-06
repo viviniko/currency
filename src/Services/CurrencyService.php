@@ -8,5 +8,13 @@ interface CurrencyService
 
     public function getDefault();
 
+    public function getCurrencies();
+
     public function listCurrencies($name = 'name', $key = 'code');
+
+    public function createCurrency(array $data);
+
+    public function updateCurrency($id, array $data);
+
+    public function deleteCurrency($id);
 }

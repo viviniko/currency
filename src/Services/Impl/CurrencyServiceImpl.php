@@ -178,4 +178,19 @@ class CurrencyServiceImpl implements CurrencyService
     {
         static::$enabled = $enable;
     }
+
+    public function createCurrency(array $data)
+    {
+        return $this->currencyRepository->create($data);
+    }
+
+    public function updateCurrency($id, array $data)
+    {
+        return $this->currencyRepository->update($id, $data);
+    }
+
+    public function deleteCurrency($id)
+    {
+        return $this->currencyRepository->delete($id);
+    }
 }
