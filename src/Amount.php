@@ -21,7 +21,17 @@ class Amount
         throw_if(!$currency instanceof Currency, new \InvalidArgumentException());
         $this->currency = $currency;
         $this->discount = $discount;
-        $this->amount = $amount * ((100 - $discount) / 100);
+        $this->amount = $amount * (1 - $discount / 100);
+    }
+
+    public static function createDefaultAmount($amount, $discount = 0)
+    {
+        return new static(CurrencyFacade::getDefault(), $amount, $discount);
+    }
+
+    public function getAmount()
+    {
+        return $this->amount;
     }
 
     public function __toString()
