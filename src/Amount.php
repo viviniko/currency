@@ -48,14 +48,14 @@ class Amount
         return new static($this->currency, max(0, $this->amount - $amount->changeCurrency($this->currency)->amount));
     }
 
-    public function mul(Amount $amount)
+    public function mul($value)
     {
-        return new static($this->currency, $this->amount * $amount->changeCurrency($this->currency)->amount);
+        return new static($this->currency, $this->amount * $value);
     }
 
-    public function div(Amount $amount)
+    public function div($value)
     {
-        return new static($this->currency, $this->amount / $amount->changeCurrency($this->currency)->amount);
+        return new static($this->currency, $this->amount / $value);
     }
 
     public function changeCurrency($currency)
