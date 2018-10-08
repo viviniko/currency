@@ -31,7 +31,7 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             \Viviniko\Currency\Repositories\Currency\CurrencyRepository::class,
-            \Viviniko\Currency\Repositories\Currency\EloquentCurrency::class
+            \Viviniko\Currency\Repositories\Currency\CurrencyRepositoryImpl::class
         );
     }
 
@@ -39,10 +39,6 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         $this->app->singleton('currency', function ($app) {
             $currencyService = $app->make(\Viviniko\Currency\Services\Currency\CurrencyServiceImpl::class);
-            $config = $app['config'];
-            $currencyService->setDefault($config->get('currency.default'));
-            $currencyService::setAutoConvert($config->get('currency.auto_convert'));
-            $currencyService::enable($config->get('currency.enabled'));
 
             return $currencyService;
         });

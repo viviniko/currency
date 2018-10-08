@@ -2,41 +2,78 @@
 
 namespace Viviniko\Currency;
 
-use Viviniko\Currency\Facades\CurrencyFacade;
-use Viviniko\Currency\Models\Currency;
+use Viviniko\Currency\Facades\Currency;
 
 class Amount
 {
-    private $currency;
+    /**
+     * @var string
+     */
+    public $currency;
 
-    private $amount;
+    /**
+     * @var float|int
+     */
+    public $amount;
 
-    private $discount;
-
-    public function __construct($currency, $amount, $discount = 0)
+    /**
+     * Amount constructor.
+     * @param $currency
+     * @param $amount
+     * @throws \Throwable
+     */
+    public function __construct($currency, $amount)
     {
-        if (is_string($currency)) {
-            $currency = CurrencyFacade::getCurrencyByCode($currency);
-        }
-        throw_if(!$currency instanceof Currency, new \InvalidArgumentException());
         $this->currency = $currency;
-        $this->discount = $discount;
-        $this->amount = $amount * (1 - $discount / 100);
+        $this->amount = $amount;
     }
 
-    public static function createDefaultAmount($amount, $discount = 0)
+    public static function createBaseAmount($amount)
     {
-        return new static(CurrencyFacade::getDefault(), $amount, $discount);
+        return new static(Currency::getBase()->code, $amount);
     }
 
-    public function getAmount()
+    public function discount($discount)
     {
-        return $this->amount;
+        return new static($this->currency, $this->amount * (1 - $discount / 100));
+    }
+
+    public function add(Amount $amount)
+    {
+        return new static($this->currency, $this->amount + $amount->changeCurrency($this->currency)->amount);
+    }
+
+    public function sub(Amount $amount)
+    {
+        return new static($this->currency, max(0, $this->amount - $amount->changeCurrency($this->currency)->amount));
+    }
+
+    public function mul(Amount $amount)
+    {
+        return new static($this->currency, $this->amount * $amount->changeCurrency($this->currency)->amount);
+    }
+
+    public function div(Amount $amount)
+    {
+        return new static($this->currency, $this->amount / $amount->changeCurrency($this->currency)->amount);
+    }
+
+    public function changeCurrency($currency)
+    {
+        $amount = $this->amount;
+        if ($currency != $this->currency) {
+            $targetCurrency = Currency::getCurrencyByCode($currency);
+            $sourceCurrency = Currency::getCurrencyByCode($this->currency);
+            $amount = $this->amount * $targetCurrency->rate / $sourceCurrency->rate;
+        }
+
+        return new static($amount, $currency);
     }
 
     public function __toString()
     {
-        return $this->currency->symbol . $this->amount;
+        return Currency::getCurrencyByCode($this->currency)->symbol .
+            number_format($this->amount, 2, '.',  ',');
     }
 
 }

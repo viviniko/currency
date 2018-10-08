@@ -2,6 +2,7 @@
 
 namespace Viviniko\Currency\Services\Currency;
 
+use Viviniko\Currency\Amount;
 use Viviniko\Currency\Repositories\Currency\CurrencyRepository;
 use Viviniko\Currency\Services\CurrencyService;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -11,17 +12,13 @@ use Illuminate\Support\Facades\Cookie;
 
 class CurrencyServiceImpl implements CurrencyService
 {
-    protected static $enabled = true;
-
-    protected static $autoConvert = false;
-
     protected $currencyRepository;
 
     protected $currencies;
 
     protected $events;
 
-    protected $default;
+    protected $base;
 
     protected $current;
 
@@ -36,20 +33,18 @@ class CurrencyServiceImpl implements CurrencyService
         $this->events = $events;
     }
 
-    public function setDefault($code)
+    /**
+     * {@inheritdoc}
+     */
+    public function getBase()
     {
-        $this->default = $code;
-
-        return $this;
-    }
-
-    public function getDefault()
-    {
-        if (!$this->default) {
-            $this->default = data_get($this->getCurrencies()->first(), 'code', 'USD');
+        if (!$this->base) {
+            $currency = $this->getCurrencies()->where('rate', 1);
+            throw_if(!$currency, new \LogicException());
+            $this->base = $currency;
         }
 
-        return $this->default;
+        return $this->base;
     }
 
     /**
@@ -85,66 +80,17 @@ class CurrencyServiceImpl implements CurrencyService
         return false;
     }
 
-    public function lists()
-    {
-        return $this->getCurrencies()->mapWithKeys(function ($currency) {
-            return [strtolower($currency->code) => $currency];
-        });
-    }
-
-    public function e($price, $symbol = true)
-    {
-        if (!static::$enabled) return $price;
-
-        $currency = '';
-        if (static::$autoConvert && is_numeric($price) && ($current = $this->current())) {
-            $price = $price * $current->rate;
-            $currency = $symbol ? $current->symbol : '';
-        }
-
-        return is_numeric($price) ? ($currency . $this->format($price, $symbol ? ',' : '')) : $price;
-    }
-
-    public function toUSD($price, $from = null)
-    {
-        $currency = $from ? $this->findByCode($from) : $this->current();
-        if ($currency && is_numeric($price) && strtoupper($currency->code) != 'USD') {
-            $price = $this->f($price / $currency->rate);
-        }
-
-        return $price;
-    }
-
-    public function f($price)
-    {
-        return $this->format($price, '');
-    }
-
-    public function h($price)
-    {
-        return $this->format($price, ',');
-    }
-
-    public function s($default = '$')
-    {
-        return data_get($this->current, 'symbol', $default);
-    }
-
-    public function t($price)
-    {
-        return $this->e($price, false);
-    }
-
-    public function format($price, $thousandsSep = '')
-    {
-        return number_format($price, 2, '.', $thousandsSep);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getCurrencyByCode($code)
     {
         return $this->getCurrencies()->where('code', $code)->first();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCurrencies()
     {
         if (!$this->currencies) {
@@ -156,29 +102,9 @@ class CurrencyServiceImpl implements CurrencyService
         return $this->currencies;
     }
 
-    public function setCurrencies($currencies)
-    {
-        $this->currencies = $currencies;
-
-        return $this;
-    }
-
     /**
-     * @param bool $convert
+     * {@inheritdoc}
      */
-    public static function setAutoConvert($convert)
-    {
-        static::$autoConvert = $convert;
-    }
-
-    /**
-     * @param bool $enable
-     */
-    public static function enable($enable)
-    {
-        static::$enabled = $enable;
-    }
-
     public function createCurrency(array $data)
     {
         $result = $this->currencyRepository->create($data);
@@ -187,6 +113,9 @@ class CurrencyServiceImpl implements CurrencyService
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function updateCurrency($id, array $data)
     {
         $result = $this->currencyRepository->update($id, $data);
@@ -195,6 +124,9 @@ class CurrencyServiceImpl implements CurrencyService
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function deleteCurrency($id)
     {
         $result = $this->currencyRepository->delete($id);
@@ -203,6 +135,9 @@ class CurrencyServiceImpl implements CurrencyService
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function listCurrencies($name = 'name', $key = 'code')
     {
         return $this->getCurrencies()->pluck($name, $key);
