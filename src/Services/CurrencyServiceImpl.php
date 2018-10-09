@@ -1,10 +1,8 @@
 <?php
 
-namespace Viviniko\Currency\Services\Currency;
+namespace Viviniko\Currency\Services;
 
-use Viviniko\Currency\Amount;
-use Viviniko\Currency\Repositories\Currency\CurrencyRepository;
-use Viviniko\Currency\Services\CurrencyService;
+use Viviniko\Currency\Repositories\CurrencyRepository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
