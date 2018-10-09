@@ -30,15 +30,15 @@ class CurrencyServiceProvider extends ServiceProvider
     protected function registerRepositories()
     {
         $this->app->singleton(
-            \Viviniko\Currency\Repositories\Currency\CurrencyRepository::class,
-            \Viviniko\Currency\Repositories\Currency\CurrencyRepositoryImpl::class
+            \Viviniko\Currency\Repositories\CurrencyRepository::class,
+            \Viviniko\Currency\Repositories\CurrencyRepositoryImpl::class
         );
     }
 
     protected function registerService()
     {
         $this->app->singleton('currency', function ($app) {
-            $currencyService = $app->make(\Viviniko\Currency\Services\Currency\CurrencyServiceImpl::class);
+            $currencyService = $app->make(\Viviniko\Currency\Services\CurrencyServiceImpl::class);
 
             return $currencyService;
         });

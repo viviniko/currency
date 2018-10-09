@@ -1,6 +1,6 @@
 <?php
 
-namespace Viviniko\Currency\Repositories\Currency;
+namespace Viviniko\Currency\Repositories;
 
 use Illuminate\Support\Facades\Config;
 use Viviniko\Repository\SimpleRepository;

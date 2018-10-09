@@ -1,6 +1,6 @@
 <?php
 
-namespace Viviniko\Currency\Repositories\Currency;
+namespace Viviniko\Currency\Repositories;
 
 interface CurrencyRepository
 {
