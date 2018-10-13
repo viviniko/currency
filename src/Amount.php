@@ -14,66 +14,66 @@ class Amount
     /**
      * @var float|int
      */
-    public $amount;
+    public $value;
 
     /**
      * Amount constructor.
      * @param $currency
-     * @param $amount
+     * @param $value
      * @throws \Throwable
      */
-    public function __construct($currency, $amount)
+    public function __construct($currency, $value)
     {
         $this->currency = $currency;
-        $this->amount = $amount;
+        $this->value = $value;
     }
 
-    public static function createBaseAmount($amount)
+    public static function createBaseAmount($value)
     {
-        return new static(Currency::getBase()->code, $amount);
+        return new static(Currency::getBase()->code, $value);
     }
 
     public function discount($discount)
     {
-        return new static($this->currency, $this->amount * (1 - $discount / 100));
+        return new static($this->currency, $this->value * (1 - $discount / 100));
     }
 
     public function add(Amount $amount)
     {
-        return new static($this->currency, $this->amount + $amount->changeCurrency($this->currency)->amount);
+        return new static($this->currency, $this->value + $amount->changeCurrency($this->currency)->value);
     }
 
     public function sub(Amount $amount)
     {
-        return new static($this->currency, max(0, $this->amount - $amount->changeCurrency($this->currency)->amount));
+        return new static($this->currency, max(0, $this->value - $amount->changeCurrency($this->currency)->value));
     }
 
     public function mul($value)
     {
-        return new static($this->currency, $this->amount * $value);
+        return new static($this->currency, $this->value * $value);
     }
 
     public function div($value)
     {
-        return new static($this->currency, $this->amount / $value);
+        return new static($this->currency, $this->value / $value);
     }
 
     public function changeCurrency($currency)
     {
-        $amount = $this->amount;
+        $value = $this->value;
         if ($currency != $this->currency) {
             $targetCurrency = Currency::getCurrencyByCode($currency);
             $sourceCurrency = Currency::getCurrencyByCode($this->currency);
-            $amount = $this->amount * $targetCurrency->rate / $sourceCurrency->rate;
+            $value = $this->value * $targetCurrency->rate / $sourceCurrency->rate;
         }
 
-        return new static($amount, $currency);
+        return new static($value, $currency);
     }
 
     public function __toString()
     {
         return Currency::getCurrencyByCode($this->currency)->symbol .
-            number_format($this->amount, 2, '.',  ',');
+            number_format($this->value, 2, '.',  ',');
     }
 
 }
