@@ -2,6 +2,7 @@
 
 namespace Viviniko\Currency\Services;
 
+use Carbon\Carbon;
 use Viviniko\Currency\Repositories\CurrencyRepository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Cache;
@@ -110,6 +111,7 @@ class CurrencyServiceImpl implements CurrencyService
      */
     public function createCurrency(array $data)
     {
+        $data['created_at'] = $data['updated_at'] = new Carbon();
         $result = $this->currencyRepository->create($data);
         Cache::forget('currency.currencies');
 
@@ -121,6 +123,7 @@ class CurrencyServiceImpl implements CurrencyService
      */
     public function updateCurrency($id, array $data)
     {
+        $data['updated_at'] = new Carbon();
         $result = $this->currencyRepository->update($id, $data);
         Cache::forget('currency.currencies');
 
