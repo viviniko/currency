@@ -12,6 +12,14 @@ interface CurrencyService
     public function getBase();
 
     /**
+     * Get currency.
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getCurrency($id);
+
+    /**
      * Get all currencies.
      *
      * @return \Illuminate\Support\Collection

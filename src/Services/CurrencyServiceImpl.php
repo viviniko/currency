@@ -45,6 +45,11 @@ class CurrencyServiceImpl implements CurrencyService
         return $this->base;
     }
 
+    public function getCurrency($id)
+    {
+        return $this->getCurrencies()->where('id', $id)->first();
+    }
+
     /**
      * Get currency code or set current currency code
      *
