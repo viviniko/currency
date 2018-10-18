@@ -38,7 +38,7 @@ class CurrencyServiceImpl implements CurrencyService
     public function getBase()
     {
         if (!$this->base) {
-            $currency = $this->getCurrencies()->where('rate', 1);
+            $currency = $this->getCurrencies()->where('rate', 1)->first();
             throw_if(!$currency, new \LogicException());
             $this->base = $currency;
         }
