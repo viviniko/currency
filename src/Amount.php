@@ -20,7 +20,6 @@ class Amount
      * Amount constructor.
      * @param $currency
      * @param $value
-     * @throws \Throwable
      */
     public function __construct($currency, $value)
     {

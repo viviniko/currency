@@ -67,4 +67,12 @@ interface CurrencyService
      * @return mixed
      */
     public function getCurrencyByCode($code);
+
+    /**
+     * create base amount.
+     *
+     * @param $amount
+     * @return mixed
+     */
+    public function createBaseAmount($amount);
 }
