@@ -66,7 +66,7 @@ class Amount
             $value = $this->value * $targetCurrency->rate / $sourceCurrency->rate;
         }
 
-        return new static($value, $currency);
+        return new static($currency, $value);
     }
 
     public function __toString()
