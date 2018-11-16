@@ -24,7 +24,7 @@ class Amount
     public function __construct($currency, $value)
     {
         $this->currency = $currency;
-        $this->value = $value;
+        $this->value = number_format($value, 2, '.',  '');
     }
 
     public static function createBaseAmount($value)
