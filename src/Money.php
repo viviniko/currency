@@ -69,6 +69,11 @@ class Money
         return new static($currency, $amount);
     }
 
+    public function isValid()
+    {
+        return is_numeric($this->amount) && $this->amount > 0;
+    }
+
     public function __toString()
     {
         return Currency::getCurrencyByCode($this->currency)->symbol .
