@@ -69,6 +69,11 @@ class Money
         return new static($currency, $amount);
     }
 
+    public function orElse($else)
+    {
+        return $this->isValid() ? $this : $else;
+    }
+
     public function isValid()
     {
         return is_numeric($this->amount) && $this->amount > 0;
