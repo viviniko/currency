@@ -27,9 +27,9 @@ class Money
         $this->amount = number_format($amount, 2, '.',  '');
     }
 
-    public static function create($amount = 0)
+    public static function create($amount = 0, $currency = null)
     {
-        return new static(Currency::getBase()->code, $amount);
+        return new static($currency ?: Currency::getBase()->code, $amount);
     }
 
     public function discount($discount)
