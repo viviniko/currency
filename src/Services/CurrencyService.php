@@ -74,5 +74,5 @@ interface CurrencyService
      * @param $amount
      * @return mixed
      */
-    public function createBaseAmount($amount);
+    public function createBaseMoney($amount = 0);
 }

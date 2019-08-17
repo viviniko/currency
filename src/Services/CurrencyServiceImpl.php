@@ -3,7 +3,7 @@
 namespace Viviniko\Currency\Services;
 
 use Carbon\Carbon;
-use Viviniko\Currency\Amount;
+use Viviniko\Currency\Money;
 use Viviniko\Currency\Repositories\CurrencyRepository;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\Cache;
@@ -153,13 +153,13 @@ class CurrencyServiceImpl implements CurrencyService
     /**
      * {@inheritdoc}
      */
-    public function createBaseAmount($amount)
+    public function createBaseMoney($amount = 0)
     {
         $currency = $this->getBase()->code;
-        if ($amount instanceof Amount) {
+        if ($amount instanceof Money) {
             return $amount->changeCurrency($currency);
         }
 
-        return new Amount($currency, $amount);
+        return new Money($currency, $amount);
     }
 }
